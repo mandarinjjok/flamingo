@@ -10,7 +10,7 @@
     <div class="flamingo-container" id="flamingo-container">
         <!-- Фламинго будут добавлены здесь динамически -->
     </div>
-
+    
     <div id="quote-bubble" class="quote-bubble"></div>
 
     <script>
@@ -40,14 +40,14 @@
             const container = document.getElementById('flamingo-container');
             const rows = 5;  // number of rows
             const cols = 8;  // number of columns
-
+            
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     const flamingo = document.createElement('img');
                     flamingo.src = 'flamingo-svgrepo-com.svg';
                     flamingo.alt = 'Flamingo';
                     flamingo.classList.add('flamingo');
-
+                    
                     // Alternate between large and small based on both row and column
                     if ((row + col) % 2 === 0) {
                         flamingo.classList.add('small');
@@ -55,20 +55,34 @@
                         flamingo.classList.add('large');
                     }
 
+                    // Apply mirrored class to every second flamingo
+                    if ((row * cols + col) % 2 !== 0) {
+                        flamingo.classList.add('mirrored');
+                    }
+
                     // Apply random animation delay
                     flamingo.style.animationDelay = getRandomDelay();
-
+                    
                     flamingo.addEventListener('click', (event) => {
                         const randomPoem = getRandomPoem();
                         quoteBubble.innerHTML = randomPoem;
                         quoteBubble.style.display = 'block';
                         quoteBubble.style.left = event.pageX + 'px';
                         quoteBubble.style.top = event.pageY + 'px';
+
+                        // Adjust quote bubble position if it goes beyond the viewport
+                        const bubbleRect = quoteBubble.getBoundingClientRect();
+                        if (bubbleRect.bottom > window.innerHeight) {
+                            quoteBubble.style.top = (window.innerHeight - bubbleRect.height) + 'px';
+                        }
+                        if (bubbleRect.right > window.innerWidth) {
+                            quoteBubble.style.left = (window.innerWidth - bubbleRect.width) + 'px';
+                        }
                     });
                     flamingo.addEventListener('mouseleave', () => {
                         quoteBubble.style.display = 'none';
                     });
-
+                    
                     container.appendChild(flamingo);
                 }
             }
