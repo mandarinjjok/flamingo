@@ -37,6 +37,10 @@ body {
     width: 150px;
 }
 
+.mirrored {
+    transform: scaleX(-1);
+}
+
 @keyframes flap {
     0%, 100% {
         transform: translateY(0) rotate(0deg);
@@ -49,6 +53,8 @@ body {
 .quote-bubble {
     position: absolute;
     max-width: 200px;
+    max-height: 150px; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scroll */
     padding: 10px;
     border-radius: 15px;
     background: #fff;
