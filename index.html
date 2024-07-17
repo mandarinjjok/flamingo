@@ -4,50 +4,249 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flamingo Animation</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: #87ceeb; /* Sky blue background */
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .flamingo-container {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-gap: 10px;
+            width: 80%;
+        }
+
+        .flamingo {
+            width: 100px;
+            animation: flap 6s infinite;
+            transform-origin: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .flamingo:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        }
+
+        .small {
+            width: 75px;
+        }
+
+        .medium {
+            width: 125px;
+        }
+
+        .large {
+            width: 175px;
+        }
+
+        @keyframes flap {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+        }
+
+        .quote-bubble {
+            position: absolute;
+            width: 300px; /* Set fixed width for better readability */
+            max-height: 400px; /* Set maximum height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            font-size: 16px; /* Increase font size for better readability */
+            display: none;
+            z-index: 10;
+        }
+
+        .author {
+            display: block; /* Ensure it starts on a new line */
+            font-weight: bold; /* Make the font bold */
+            margin-top: 10px; /* Add some space above the author name */
+        }
+    </style>
 </head>
 <body>
     <div class="flamingo-container" id="flamingo-container">
         <!-- Фламинго будут добавлены здесь динамически -->
+        <div class="quote-bubble" id="quote-bubble"></div>
     </div>
-    
-    <div id="quote-bubble" class="quote-bubble"></div>
 
     <script>
-        const poems = [
-            `<div class="poem">
-                <div data-content="text">«Ну-ка, дети!<br>Кто храбрее всех на свете?»<br>Так и знал — в ответ все хором нараспев:<br>«Лев!»</div>
-                <div data-content="text">— «Лев? ха-ха… легко быть храбрым,<br>Если лапы шире швабры,<br>Нет, ни лев, ни слон… храбрее всех малыш —<br>Мышь!</div>
-                <div data-content="text">Сам вчера я видел чудо,<br>Как мышонок влез на блюдо<br>И у носа спящей кошки<br>Не спеша поел все крошки.<br>Что!»</div>
-                <div class="author" data-author-title="Саша Чёрный"></div>
-                <div class="year">1921 г.</div>
-            </div>`,
-            // Можно добавить другие стихи в таком же формате
-        ];
-
-        function getRandomPoem() {
-            const randomIndex = Math.floor(Math.random() * poems.length);
-            return poems[randomIndex];
-        }
-
-        function getRandomDelay() {
-            return (Math.random() * 5) + 's';
-        }
-
-        const quoteBubble = document.getElementById('quote-bubble');
-
-        function createFlamingos() {
+        document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('flamingo-container');
+            const quoteBubble = document.getElementById('quote-bubble');
+            const poems = [
+                `<div class="poem">
+                    Я вас любил: любовь еще, быть может...<br>
+                    Я вас любил: любовь еще, быть может,<br>
+                    В душе моей угасла не совсем;<br>
+                    Но пусть она вас больше не тревожит;<br>
+                    Я не хочу печалить вас ничем.<br>
+                    Я вас любил безмолвно, безнадежно,<br>
+                    То робостью, то ревностью томим;<br>
+                    Я вас любил так искренно, так нежно,<br>
+                    Как дай вам Бог любимой быть другим.<br>
+                    <span class="author">1829 г. - Александр Пушкин</span>
+                </div>`,
+                `<div class="poem">
+                    Нам не дано предугадать...<br>
+                    Нам не дано предугадать,<br>
+                    Как слово наше отзовется, —<br>
+                    И нам сочувствие дается,<br>
+                    Как нам дается благодать...<br>
+                    <span class="author">1869 г. - Федор Тютчев</span>
+                </div>`,
+                `<div class="poem">
+                    Она<br>
+                    Две незабудки, два сапфира —<br>
+                    Ее очей приветный взгляд,<br>
+                    И тайны горнего эфира<br>
+                    В живой лазури их сквозят.<br>
+                    Ее кудрей руно златое<br>
+                    В таком свету, какой один,<br>
+                    Изображая неземное,<br>
+                    Сводил на землю Перуджин.<br>
+                    <span class="author">1889 г. - Афанасий Фет</span>
+                </div>`,
+                `<div class="poem">
+                    Мне голос был<br>
+                    Мне голос был. Он звал утешно,<br>
+                    Он говорил: «Иди сюда,<br>
+                    Оставь свой край глухой и грешный,<br>
+                    Оставь Россию навсегда.<br>
+                    Я кровь от рук твоих отмою,<br>
+                    Из сердца выну чёрный стыд,<br>
+                    Я новым именем покрою<br>
+                    Боль поражений и обид».<br>
+                    Но равнодушно и спокойно<br>
+                    Руками я замкнула слух,<br>
+                    Чтоб этой речью недостойной<br>
+                    Не осквернялся скорбный дух.<br>
+                    <span class="author">1917 г. - Анна Ахматова</span>
+                </div>`,
+                `<div class="poem">
+                    С добрым утром!<br>
+                    Задремали звезды золотые,<br>
+                    Задрожало зеркало затона,<br>
+                    Брезжит свет на заводи речные<br>
+                    И румянит сетку небосклона.<br>
+                    Улыбнулись сонные березки,<br>
+                    Растрепали шелковые косы.<br>
+                    Шелестят зеленые сережки,<br>
+                    И горят серебряные росы.<br>
+                    У плетня заросшая крапива<br>
+                    Обрядилась ярким перламутром<br>
+                    И, качаясь, шепчет шаловливо:<br>
+                    «С добрым утром!»<br>
+                    <span class="author">1914 г. - Федор Тютчев</span>
+                </div>`,
+                `<div class="poem">
+                    Не рассуждай, не хлопочи...<br>
+                    Не рассуждай, не хлопочи —<br>
+                    Безумство ищет — глупость судит;<br>
+                    Дневные раны сном лечи,<br>
+                    А завтра быть чему — то будет...<br>
+                    Живя, умей все пережить:<br>
+                    Печаль, и радость, и тревогу —<br>
+                    Чего желать? О чем тужить?<br>
+                    День пережит — и слава Богу!<br>
+                    <span class="author">1850 г. - Афанасий Фет</span>
+                </div>`,
+                `<div class="poem">
+                    Бабочка<br>
+                    Ты прав. Одним воздушным очертаньем<br>
+                    Я так мила.<br>
+                    Весь бархат мой с его живым миганьем —<br>
+                    Лишь два крыла.<br>
+                    Не спрашивай: откуда появилась?<br>
+                    Куда спешу?<br>
+                    Здесь на цветок я легкий опустилась<br>
+                    И вот — дышу.<br>
+                    Надолго ли, без цели, без усилья,<br>
+                    Дышать хочу?<br>
+                    Вот-вот сейчас, сверкнув, раскину крылья<br>
+                    И улечу.<br>
+                    <span class="author">1884 г. - Афанасий Фет</span>
+                </div>`,
+                `<div class="poem">
+                    Осень<br>
+                    Листья в поле пожелтели,<br>
+                    И кружатся и летят;<br>
+                    Лишь в бору поникши ели<br>
+                    Зелень мрачную хранят.<br>
+                    Под нависшею скалою<br>
+                    Уж не любит, меж цветов,<br>
+                    Пахарь отдыхать порою<br>
+                    От полуденных трудов.<br>
+                    Зверь, отважный, поневоле<br>
+                    Скрыться где-нибудь спешит.<br>
+                    Ночью месяц тускл, и поле<br>
+                    Сквозь туман лишь серебрит.<br>
+                    <span class="author">1828 г. - Михаил Лермонтов</span>
+                </div>`,
+                `<div class="poem">
+                    Чудная картина...<br>
+                    Чудная картина,<br>
+                    Как ты мне родна:<br>
+                    Белая равнина,<br>
+                    Полная луна,<br>
+                    Свет небес высоких,<br>
+                    И блестящий снег,<br>
+                    И саней далеких<br>
+                    Одинокий бег.<br>
+                    <span class="author">1847 г. - Афанасий Фет</span>
+                </div>`,
+                `<div class="poem">
+                    Быть может<br>
+                    Быть может через годы, быть может через дни,<br>
+                    С тобой мы будем вместе, и будем мы одни.<br>
+                    И сердце сердцу скажет, что в смене дней и лет,<br>
+                    Есть вечный, негасимый, неуловимый свет.<br>
+                    Он был у нас во взорах, названья нет ему,<br>
+                    Он будет снова — знаю, не зная, почему.<br>
+                    Но мы, переменившись во внешностях своих,<br>
+                    Друг другу молча скажем, глазами, яркий стих.<br>
+                    Мы скажем: Вот, мы вместе. Где жизнь? Где мир? Где плен?<br>
+                    Мы — жизнь, и в переменах для сердца нет измен.<br>
+                    Еще, еще мы скажем, но что, не знаю я,<br>
+                    Лишь знаю, что бессмертна любовь и жизнь моя.<br>
+                    Лишь знаю — побледнею, и побледнеешь ты,<br>
+                    И в нас обоих вспыхнут, лишь нами, все черты.<br>
+                    <span class="author">Константин Бальмонт</span>
+                </div>`,
+                `<div class="poem">
+                    Создатель мой! Спасибо за весну!<br>
+                    Я думал, что она не возвратится, —<br>
+                    Но... дай сбежать в лесную тишину<br>
+                    От злобы дня, холеры и столицы!<br>
+                    Весенний ветер за дверьми...<br>
+                    В кого б влюбиться, черт возьми?<br>
+                    <span class="author">Саша Чёрный</span>
+                </div>`
+            ];
+
             const rows = 5;  // number of rows
             const cols = 8;  // number of columns
-            
+
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     const flamingo = document.createElement('img');
-                    flamingo.src = 'flamingo-svgrepo-com.svg';
+                    flamingo.src = 'flamingo-svgrepo-com.svg';  // Убедитесь, что этот путь верен
                     flamingo.alt = 'Flamingo';
                     flamingo.classList.add('flamingo');
-                    
+
                     // Alternate between large and small based on both row and column
                     if ((row + col) % 2 === 0) {
                         flamingo.classList.add('small');
@@ -55,40 +254,31 @@
                         flamingo.classList.add('large');
                     }
 
-                    // Apply mirrored class to every second flamingo
-                    if ((row * cols + col) % 2 !== 0) {
-                        flamingo.classList.add('mirrored');
-                    }
+                    // Add random animation delay
+                    const randomDelay = Math.random() * 5; // Random delay between 0 and 5 seconds
+                    flamingo.style.animationDelay = `${randomDelay}s`;
 
-                    // Apply random animation delay
-                    flamingo.style.animationDelay = getRandomDelay();
-                    
-                    flamingo.addEventListener('click', (event) => {
-                        const randomPoem = getRandomPoem();
+                    // Add event listener for displaying quote bubble
+                    flamingo.addEventListener('click', (e) => {
+                        const randomPoem = poems[Math.floor(Math.random() * poems.length)];
                         quoteBubble.innerHTML = randomPoem;
+                        const rect = flamingo.getBoundingClientRect();
+                        quoteBubble.style.top = `${rect.top + window.scrollY - quoteBubble.offsetHeight - 10}px`;
+                        quoteBubble.style.left = `${rect.left + window.scrollX + (flamingo.offsetWidth / 2) - (quoteBubble.offsetWidth / 2)}px`;
                         quoteBubble.style.display = 'block';
-                        quoteBubble.style.left = event.pageX + 'px';
-                        quoteBubble.style.top = event.pageY + 'px';
+                    });
 
-                        // Adjust quote bubble position if it goes beyond the viewport
-                        const bubbleRect = quoteBubble.getBoundingClientRect();
-                        if (bubbleRect.bottom > window.innerHeight) {
-                            quoteBubble.style.top = (window.innerHeight - bubbleRect.height) + 'px';
-                        }
-                        if (bubbleRect.right > window.innerWidth) {
-                            quoteBubble.style.left = (window.innerWidth - bubbleRect.width) + 'px';
-                        }
-                    });
-                    flamingo.addEventListener('mouseleave', () => {
-                        quoteBubble.style.display = 'none';
-                    });
-                    
                     container.appendChild(flamingo);
                 }
             }
-        }
 
-        document.addEventListener('DOMContentLoaded', createFlamingos);
+            // Hide quote bubble when clicking anywhere outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('flamingo')) {
+                    quoteBubble.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
