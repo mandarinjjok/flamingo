@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flamingo Animation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="flamingo-container" id="flamingo-container">
+        <!-- Фламинго будут добавлены здесь динамически -->
+    </div>
+
+    <div id="quote-bubble" class="quote-bubble"></div>
+
+    <script>
+        const poems = [
+            `<div class="poem">
+                <div data-content="text">«Ну-ка, дети!<br>Кто храбрее всех на свете?»<br>Так и знал — в ответ все хором нараспев:<br>«Лев!»</div>
+                <div data-content="text">— «Лев? ха-ха… легко быть храбрым,<br>Если лапы шире швабры,<br>Нет, ни лев, ни слон… храбрее всех малыш —<br>Мышь!</div>
+                <div data-content="text">Сам вчера я видел чудо,<br>Как мышонок влез на блюдо<br>И у носа спящей кошки<br>Не спеша поел все крошки.<br>Что!»</div>
+                <div class="author" data-author-title="Саша Чёрный"></div>
+                <div class="year">1921 г.</div>
+            </div>`,
+            // Можно добавить другие стихи в таком же формате
+        ];
+
+        function getRandomPoem() {
+            const randomIndex = Math.floor(Math.random() * poems.length);
+            return poems[randomIndex];
+        }
+
+        function getRandomDelay() {
+            return (Math.random() * 5) + 's';
+        }
+
+        const quoteBubble = document.getElementById('quote-bubble');
+
+        function createFlamingos() {
+            const container = document.getElementById('flamingo-container');
+            const rows = 5;  // number of rows
+            const cols = 8;  // number of columns
+
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const flamingo = document.createElement('img');
+                    flamingo.src = 'flamingo-svgrepo-com.svg';
+                    flamingo.alt = 'Flamingo';
+                    flamingo.classList.add('flamingo');
+
+                    // Alternate between large and small based on both row and column
+                    if ((row + col) % 2 === 0) {
+                        flamingo.classList.add('small');
+                    } else {
+                        flamingo.classList.add('large');
+                    }
+
+                    // Apply random animation delay
+                    flamingo.style.animationDelay = getRandomDelay();
+
+                    flamingo.addEventListener('click', (event) => {
+                        const randomPoem = getRandomPoem();
+                        quoteBubble.innerHTML = randomPoem;
+                        quoteBubble.style.display = 'block';
+                        quoteBubble.style.left = event.pageX + 'px';
+                        quoteBubble.style.top = event.pageY + 'px';
+                    });
+                    flamingo.addEventListener('mouseleave', () => {
+                        quoteBubble.style.display = 'none';
+                    });
+
+                    container.appendChild(flamingo);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', createFlamingos);
+    </script>
+</body>
+</html>

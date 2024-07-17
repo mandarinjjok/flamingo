@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #87ceeb; /* Sky blue background */
+    overflow: hidden;
+}
+
+.flamingo-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    width: 90%;
+    height: auto;
+}
+
+.flamingo {
+    animation: flap 5s infinite;
+    transform-origin: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.flamingo:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+.small {
+    width: 75px;
+}
+
+.large {
+    width: 150px;
+}
+
+@keyframes flap {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(5deg);
+    }
+}
+
+.quote-bubble {
+    position: absolute;
+    max-width: 200px;
+    padding: 10px;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: none;
+    z-index: 10;
+}
+
+.poem {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.author {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.year {
+    font-style: italic;
+    margin-top: 5px;
+}
