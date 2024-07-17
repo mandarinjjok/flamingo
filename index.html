@@ -262,9 +262,17 @@
                     flamingo.addEventListener('click', (e) => {
                         const randomPoem = poems[Math.floor(Math.random() * poems.length)];
                         quoteBubble.innerHTML = randomPoem;
-                        const rect = flamingo.getBoundingClientRect();
-                        quoteBubble.style.top = `${rect.top + window.scrollY - quoteBubble.offsetHeight - 10}px`;
-                        quoteBubble.style.left = `${rect.left + window.scrollX + (flamingo.offsetWidth / 2) - (quoteBubble.offsetWidth / 2)}px`;
+
+                        // Get viewport dimensions
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+
+                        // Set quote bubble position to be closer to the center
+                        const bubbleWidth = quoteBubble.offsetWidth;
+                        const bubbleHeight = quoteBubble.offsetHeight;
+
+                        quoteBubble.style.top = `${(viewportHeight - bubbleHeight) / 2}px`;
+                        quoteBubble.style.left = `${(viewportWidth - bubbleWidth) / 2}px`;
                         quoteBubble.style.display = 'block';
                     });
 
